@@ -27,6 +27,8 @@ var (
 	)
 	integerToken = rex.Chars.Digits().Repeat().OneOrMore()
 	stringToken  = rex.Chars.Any().Repeat().OneOrMore()
+	uuidToken    = rex.Common.Raw(openapi3.FormatOfStringForUUIDOfRFC4122)
+
 	defaultToken = stringToken
 )
 
@@ -56,7 +58,7 @@ func createServerUrlMatchingGroup(serverUrls []string) string {
 	return encapsulateRegexToken(rex.Group.Composite(serverUrlsTokens...))
 }
 
-func getPathParamType(name string, params *openapi3.Parameters) *openapi3.Types {
+func getPathParamType(name string, params *openapi3.Parameters) *openapi3.Schema {
 	if params == nil {
 		log.Default().Print("no path parameters has been defined")
 		return nil
@@ -68,17 +70,20 @@ func getPathParamType(name string, params *openapi3.Parameters) *openapi3.Types 
 		return nil
 	}
 
-	return p.Schema.Value.Type
+	return p.Schema.Value
 }
 
 func createParamsMatchingGroup(name string, params *openapi3.Parameters) string {
 	var t dialect.Token
 	switch paramType := getPathParamType(name, params); {
-	case paramType.Is("string"):
+	case paramType.Type.Is("string"):
 		t = stringToken
-	case paramType.Is("number"):
+		if paramType.Format == "uuid" {
+			t = uuidToken
+		}
+	case paramType.Type.Is("number"):
 		t = numberToken
-	case paramType.Is("integer"):
+	case paramType.Type.Is("integer"):
 		t = integerToken
 	default:
 		t = defaultToken
