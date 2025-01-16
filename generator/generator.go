@@ -80,7 +80,7 @@ func (g *Generator) createRule(verb string, path string, o *openapi3.Operation) 
 		Upstream:       g.cfg.Upstream,
 		Authenticators: authenticators,
 		Authorizer: oathkeeper.RuleHandler{
-			Handler: "allow",
+			Handler: "remote_json",
 		},
 		Mutators: g.cfg.Mutators,
 		Errors:   g.cfg.Errors,
