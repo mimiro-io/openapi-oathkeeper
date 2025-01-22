@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	FormatOfStringForUUIDOfRFC4122 = `(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3,4}-[89abAB][0-9a-fA-F]{3,4}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)`
+	FormatOfStringForUUID = `(?:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)`
 )
 
 var (
@@ -31,7 +31,7 @@ var (
 	)
 	integerToken = rex.Chars.Digits().Repeat().OneOrMore()
 	stringToken  = rex.Chars.Any().Repeat().OneOrMore()
-	uuidToken    = rex.Common.Raw(FormatOfStringForUUIDOfRFC4122)
+	uuidToken    = rex.Common.Raw(FormatOfStringForUUID)
 
 	defaultToken = stringToken
 )
