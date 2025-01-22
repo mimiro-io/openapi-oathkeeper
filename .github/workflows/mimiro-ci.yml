@@ -12,9 +12,7 @@ on:
 jobs:
 
   AWS:
-    uses: mimiro-io/github-actions/.github/workflows/docker.yaml@main
+    uses: mimiro-io/github-actions/.github/workflows/dockerhub.yaml@main
     with:
-      skip_trivy: true
-      k8s_namespace: auth
-    secrets:
-      ECR_REPO_POLICY: ${{ secrets.ECR_REPO_POLICY }}
+      username: ${{ secrets.DOCKERHUB_USERNAME }}
+      password: ${{ secrets.DOCKERHUB_TOKEN }}
