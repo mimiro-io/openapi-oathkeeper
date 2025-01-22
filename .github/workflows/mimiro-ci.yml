@@ -1,0 +1,20 @@
+
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  release:
+    types:
+      - published
+
+jobs:
+
+  AWS:
+    uses: mimiro-io/github-actions/.github/workflows/docker.yaml@main
+    with:
+      skip_trivy: true
+      k8s_namespace: auth
+    secrets:
+      ECR_REPO_POLICY: ${{ secrets.ECR_REPO_POLICY }}
